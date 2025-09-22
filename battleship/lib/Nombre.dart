@@ -5,13 +5,9 @@ class Nombre {
   late final String valor;
 
   Nombre(String c) {
-    _validar(c);
-    valor = c;
-  }
-
-  void _validar(String c) {
     _validarLongitud(c);
     _validarCaracteres(c);
+    valor = c;
   }
 
   void _validarLongitud(String c) {
@@ -31,19 +27,17 @@ class Nombre {
   }
 }
 
-
 class LongitudMinimaException implements Exception {
-  @override
-  String toString() => 'El nombre debe tener al menos $longitudMinima caracteres.';
+ 
+  String toString() => 'La longitud mínima permitida es $longitudMinima caracteres.';
 }
 
 class LongitudMaximaException implements Exception {
-  @override
-  String toString() => 'El nombre no puede tener más de $longitudMaxima caracteres.';
+  
+  String toString() => 'La longitud máxima permitida es $longitudMaxima caracteres.';
 }
 
 class CaracteresInvalidosException implements Exception {
-  @override
-  String toString() =>
-      'El nombre debe comenzar con una letra y solo contener letras y números.';
+  
+  String toString() => 'El nombre solo puede contener letras y números, y debe comenzar con una letra.';
 }
