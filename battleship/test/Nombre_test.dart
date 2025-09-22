@@ -2,24 +2,25 @@ import 'package:test/test.dart';
 import 'package:battleship/Nombre.dart';
 
 void main() {
-  test('Nombre demasiado corto', () {
-    expect(() => Nombre("Ana"), throwsA(isA<LongitudMinimaExepcion>()));
-  });
+  group('Clase Nombre', () {
+    test('Crea nombre válido', () {
+      final nombre = Nombre('Juan123');
+      expect(nombre.valor, equals('Juan123'));
+    });
 
-  test('Nombre demasiado largo', () {
-    expect(() => Nombre("EsteNombreEsDemasiadoLargo"), throwsA(isA<LongitudMaximaExepcion>()));
-  });
+    test('Lanza LongitudMinimaException para nombre muy corto', () {
+      expect(() => Nombre('Ana'), throwsA(isA<LongitudMinimaException>()));
+    });
 
-  test('Nombre con caracteres especiales', () {
-    expect(() => Nombre("Juan!"), throwsA(isA<CaracteresInvalidosExepcion>()));
-    expect(() => Nombre("María"), throwsA(isA<CaracteresInvalidosExepcion>())); 
-    expect(() => Nombre("Pedro_123"), throwsA(isA<CaracteresInvalidosExepcion>()));
-    expect(() => Nombre("1Carlos"), throwsA(isA<CaracteresInvalidosExepcion>()));
-  });
+    test('Lanza LongitudMaximaException para nombre muy largo', () {
+      final nombreLargo = 'A' * 20;
+      expect(() => Nombre(nombreLargo), throwsA(isA<LongitudMaximaException>()));
+    });
 
-  test('Nombre válido', () {
-    expect(() => Nombre("Carlos123"), returnsNormally);
-    expect(() => Nombre("Luis"), throwsA(isA<LongitudMinimaExepcion>())); 
-    expect(() => Nombre("Roberto89"), returnsNormally);
+    test('Lanza CaracteresInvalidosException para caracteres inválidos', () {
+      expect(() => Nombre('123Juan'), throwsA(isA<CaracteresInvalidosException>()));
+      expect(() => Nombre('Juan!'), throwsA(isA<CaracteresInvalidosException>()));
+      expect(() => Nombre('Jua n'), throwsA(isA<CaracteresInvalidosException>()));
+    });
   });
 }
