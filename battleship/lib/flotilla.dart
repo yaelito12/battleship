@@ -1,37 +1,35 @@
-
-enum TipoBarco { bote, lancha, submarino, crucero, portaaviones }
-
-
-const Map<TipoBarco, int> _longitudes = {
-  TipoBarco.bote: 1,
-  TipoBarco.lancha: 2,
-  TipoBarco.submarino: 3,
-  TipoBarco.crucero: 4,
-  TipoBarco.portaaviones: 5,
-};
-
-
+enum TiposBarcos { bote, lancha, submarino, crucero, portaaviones }
+enum DireccionesHacia { arriba, abajo, izquierda, derecha }
+ 
 class Barco {
-  final TipoBarco tipo;
-  int get longitud => _longitudes[tipo]!;
-
+  TiposBarcos tipo;
   Barco(this.tipo);
 }
-
-
-class ExcepcionCantidad extends Error {}
-class ExcepcionTipos extends Error {}
-
+ 
 class Flotilla {
-  final List<Barco> barcos;
-
-  Flotilla(List<Barco> barcos)
-      : barcos = List.unmodifiable(barcos) {
-    if (barcos.length != 5) throw ExcepcionCantidad();
-    if (barcos.map((b) => b.tipo).toSet().length != 5) throw ExcepcionTipos();
+  final List<Barco> _barcos;
+  int get cantidad => _barcos.length;
+  Flotilla(this._barcos) {
+    if (!esCantidadCorrecta(_barcos)) throw FlotillaCantidadExcepcion();
+    if (!sonTiposCorrectos(_barcos)) throw FlotillaTiposExcepcion();
+    if (!estanEnPosicionAdecuada(_barcos)) throw FlotillaPosicionExcepcion();
   }
-
-  int get cantidad => barcos.length;
-
-  int get longitudTotal => barcos.fold(0, (suma, b) => suma + b.longitud);
 }
+ 
+bool estanEnPosicionAdecuada(List<Barco> barcos) {
+  return false;
+}
+ 
+bool esCantidadCorrecta(List<Barco> barcos) {
+  return barcos.length == 5;
+}
+ 
+bool sonTiposCorrectos(List<Barco> barcos) {
+  return barcos.map((e) => e.tipo).toSet().length == 5;
+}
+ 
+ 
+ 
+class FlotillaCantidadExcepcion extends Error {}
+class FlotillaTiposExcepcion extends Error {}
+class FlotillaPosicionExcepcion extends Error {}
