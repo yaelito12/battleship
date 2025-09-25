@@ -69,6 +69,12 @@ void posicionarElementos() {
   }
 }
 }
+
+
+
+
+
+
 class Flotilla {
   final List<Barco> _barcos;
   int get cantidad => _barcos.length;
@@ -80,9 +86,38 @@ class Flotilla {
 }
  
 bool estanEnPosicionAdecuada(List<Barco> barcos) {
-  return false;
-}
+
+  final ocupadas = <Punto>{};
+
+  for (final barco in barcos) {
+    for (final elem in barco.elementos) {
  
+      if (ocupadas.contains(elem.punto)) {
+        return false; 
+      }
+
+     
+      for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+          final vecino = Punto(
+            columna: elem.punto.columna + dx,
+            fila: elem.punto.fila + dy,
+          );
+
+          if (ocupadas.contains(vecino)) {
+            return false; 
+          }
+        }
+      }
+    }
+
+    for (final elem in barco.elementos) {
+      ocupadas.add(elem.punto);
+    }
+  }
+
+  return true; // No hay barcos adyacentes
+}
 bool esCantidadCorrecta(List<Barco> barcos) {
   return barcos.length == 5;
 }
