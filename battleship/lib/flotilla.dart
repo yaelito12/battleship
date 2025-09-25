@@ -12,28 +12,34 @@ List <Elemento> elementos = [];
 final int tamano;
 
 
-  Barco({required this.tipo, 
-  required this.puntoInicial, 
-  required this.direccion
+ Barco({
+  required this.tipo,
+  required this.puntoInicial,
+  required this.direccion,
+})  : tamano = _calcularTamano(tipo) {
+  posicionarElementos(); 
+}
   
-  }) :tamano = _calcularTamano(tipo);
-
+ 
 static int _calcularTamano(TiposBarcos tipo) {
-  switch (tipo) {    
-    case TiposBarcos.bote:
-      return 1;
-    case TiposBarcos.lancha:
-      return 2;
+switch (tipo) {    
+  case TiposBarcos.bote:
+return 1;
+  case TiposBarcos.lancha:
+    return 2;
     case TiposBarcos.submarino:
-      return 3;
+    return 3;
     case TiposBarcos.crucero:
-      return 4;
+    return 4;
     case TiposBarcos.portaaviones:
-      return 5;
+    return 5;
   }
 
+
 }
- 
+
+
+
 void posicionarElementos() {
   for (int i = 0; i < tamano; i++) {
     int columna = puntoInicial.columna;
@@ -54,9 +60,13 @@ void posicionarElementos() {
         break;
     }
 
+    // Verifica que esté dentro del tablero (suponiendo de 0 a 9)
+    if (columna < 0 || columna >= 10 || fila < 0 || fila >= 10) {
+      throw PosicionInvalidaException(); // Crea esta excepción
+    }
+
     elementos.add(Elemento(punto: Punto(columna: columna, fila: fila)));
   }
-
 }
 }
 class Flotilla {
@@ -87,3 +97,4 @@ bool sonTiposCorrectos(List<Barco> barcos) {
 class FlotillaCantidadExcepcion extends Error {}
 class FlotillaTiposExcepcion extends Error {}
 class FlotillaPosicionExcepcion extends Error {}
+class PosicionInvalidaException extends Error {}
